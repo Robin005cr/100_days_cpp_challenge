@@ -70,7 +70,7 @@ public:
     }
 };
 
-// ------------------- Demo -------------------
+
 int main() {
     MyVector<int> vec;
 
