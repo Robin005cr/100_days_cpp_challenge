@@ -1,18 +1,18 @@
 /*
-* project   : https://github.com/Robin005cr/100_days_cpp_challenge
-* file name : string_impl.cpp
-* author    : Robin CR
-* mail id   : robinchovallurraju@gmail.com
-* LinkedIn  : https://www.linkedin.com/in/robin-cr/
-* portfolio : https://robin005cr.github.io/
-*
-* Note : If any mistakes, errors, or inconsistencies are found in the code, please feel free to mail me.
-* Suggestions for improvements or better methods are always welcome and appreciated.
-* I value constructive feedback and aim to continuously improve the quality of the work.
-*
-*/
-#include<iostream>
-#include<cstring>
+ * project   : https://github.com/Robin005cr/100_days_cpp_challenge
+ * file name : string_impl.cpp
+ * author    : Robin CR
+ * mail id   : robinchovallurraju@gmail.com
+ * LinkedIn  : https://www.linkedin.com/in/robin-cr/
+ * portfolio : https://robin005cr.github.io/
+ *
+ * Note : If any mistakes, errors, or inconsistencies are found in the code, please feel free to mail me.
+ * Suggestions for improvements or better methods are always welcome and appreciated.
+ * I value constructive feedback and aim to continuously improve the quality of the work.
+ *
+ */
+#include <iostream>
+#include <cstring>
 using namespace std;
 class stringContainer
 {
@@ -20,12 +20,15 @@ private:
 	char *data;
 	size_t size;
 	size_t capacity;
+
 public:
-	void memalloc(size_t new_capacity) {
+	void memalloc(size_t new_capacity)
+	{
 		data = new char[new_capacity];
 		capacity = new_capacity;
 	}
-	void dealloc() {
+	void dealloc()
+	{
 		delete[] data;
 		data = nullptr;
 		size = 0;
@@ -35,47 +38,79 @@ public:
 	stringContainer() : data(nullptr), size(0), capacity(0) {}
 
 	// Parametrised Ctor
-	stringContainer(const char* str) {
+	stringContainer(const char *str)
+	{
+		cout << "Parametrised ctor" << endl;
 		size = strlen(str);
 		capacity = size + 1;
 		memalloc(capacity);
 		strcpy(data, str);
 	}
-	stringContainer(const stringContainer& other);
-	stringContainer& operator=(const stringContainer& other);
+	stringContainer(const stringContainer &other);
+	stringContainer &operator=(const stringContainer &other);
+	stringContainer(stringContainer &&other);
+	stringContainer &operator=(stringContainer &&other);
 	~stringContainer()
 	{
 		dealloc();
 	}
 };
 
-
-stringContainer::stringContainer(const stringContainer& other):data{nullptr},size{other.size},capacity{other.capacity}
+stringContainer::stringContainer(const stringContainer &other) : data{nullptr}, size{other.size}, capacity{other.capacity}
 {
+	cout << "Copy Ctor " << endl;
 	memalloc(capacity);
-	strcpy(data,other.data);
+	strcpy(data, other.data);
 }
-stringContainer& stringContainer::operator=(const stringContainer& other)
+stringContainer &stringContainer::operator=(const stringContainer &other)
 {
-	if(this!=&other)
+	cout << "Copy assignment " << endl;
+	if (this != &other)
 	{
 		dealloc();
 		size = other.size;
 		capacity = other.capacity;
 		memalloc(capacity);
-		strcpy(data,other.data);
+		strcpy(data, other.data);
+	}
+	return *this;
+}
 
+stringContainer::stringContainer(stringContainer &&other) : data{other.data}, size{other.size}, capacity{other.capacity}
+{
+	cout << "Move Ctor " << endl;
+	other.data = nullptr;
+	other.size = 0;
+	other.capacity = 0;
+}
+
+stringContainer &stringContainer::operator=(stringContainer &&other)
+{
+	cout << "Move assignment " << endl;
+	if (this != &other)
+	{
+		dealloc();
+		size = other.size;
+		capacity = other.capacity;
+		memalloc(capacity);
+
+		other.data = nullptr;
+		other.size = 0;
+		other.capacity = 0;
 	}
 	return *this;
 }
 int main()
 {
 
-	stringContainer S1 = "Hello";  // Parametrised Ctor
-	stringContainer S2 = S1;       // Copy Ctor
+	stringContainer S1 = "Hello"; // Parametrised Ctor
+	stringContainer S2 = S1;	  // Copy Ctor
 
-	stringContainer S3;            // Default Ctor
-	S3 = S2;                        // Copy assignment operator
+	stringContainer S3; // Default Ctor
+	S3 = S2;			// Copy assignment operator
+
+	stringContainer S4 = std::move(S1); // Move Ctor
+	stringContainer S5;
+	S5 = std::move(S2); // Move assignment operator
 	return 0;
-
 }
