@@ -1,6 +1,6 @@
 /*
  * project   : https://github.com/Robin005cr/100_days_cpp_challenge
- * file name : unique_ptr_impl.cpp
+ * file name : unique_ptr.cpp
  * author    : Robin CR
  * mail id   : robinchovallurraju@gmail.com
  * LinkedIn  : https://www.linkedin.com/in/robin-cr/
